@@ -1,123 +1,290 @@
-
 <!DOCTYPE html>
-<html lang="fr">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DivinTick - Vos Tickets WiFi</title>
-    <script src="https://jsdelivr.net"></script>
-    <script src="https://fedapay.com"></script>
+    <title id="title">DIVIN CYBER CAFE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="theme-color" content="#2484ac" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+     <!-- Start WOWSlider.com HEAD section -->
+<link rel="stylesheet" type="text/css" href="engine1/style.css" />
+<script type="text/javascript" src="engine1/jquery.js"></script>
+<!-- End WOWSlider.com HEAD section -->
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 antialiased p-4">
 
-    <header class="bg-blue-600 text-white text-center py-6 px-4 shadow-md rounded-2xl max-w-md mx-auto mb-6">
-        <h1 class="text-2xl font-black tracking-tight">⚡ DIVIN CYBER CAFÉ</h1>
-        <p class="text-blue-100 mt-1 text-xs">Achetez vos forfaits Wi-Fi via MTN, Moov ou Celtiis</p>
-    </header>
+<body  class="background" onload="voucher()">
+        $(if chap-id)
+        <form name="sendin" action="$(link-login-only)" method="post">
+            <input type="hidden" name="username" />
+            <input type="hidden" name="password" />
+            <input type="hidden" name="dst" value="$(link-orig)" />
+            <input type="hidden" name="popup" value="true" />
+        </form>
 
-    <main class="max-w-md mx-auto space-y-6">
+        <script type="text/javascript" src="md5.js"></script>
+        <script type="text/javascript">
+            function doLogin() {
+                document.sendin.username.value = document.login.username.value;
+                document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value +
+                    '$(chap-challenge)');
+                document.sendin.submit();
+                return false;
+            }
+        </script>
+        $(endif)
 
-        <!-- CATEGORIE : FORFAITS VOLUME -->
-        <div>
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-2 px-1">📊 Forfaits Volume</h2>
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">1 Go <span class="text-xs text-slate-400 font-normal">(Valide 24H)</span></h3></div>
-                    <button id="pay-v1" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">100 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">3 Go <span class="text-xs text-slate-400 font-normal">(Valide 48H)</span></h3></div>
-                    <button id="pay-v3" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">200 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">9 Go <span class="text-xs text-slate-400 font-normal">(Valide 5 Jours)</span></h3></div>
-                    <button id="pay-v9" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">500 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                    <div><h3 class="font-bold">20 Go <span class="text-xs text-slate-400 font-normal">(Valide 10 Jours)</span></h3></div>
-                    <button id="pay-v20" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">1000 F</button>
-                </div>
+            <div id="main" class="main">
+            
+            <div class="box">
+                <img src="01.png" alt="Logo" style="width:30%; height:auto; border-radius: 05px; margin-bottom: -110px;"/>
+                <h3 class="animate-charcter">DIVIN CYBER CAFE</h3>
+                <h2><marquee bgcolor="#A6DFE6">Surfez en Haut Débit 24H/7 +229 0194976950 // 0196300042</marquee></h2>
+
+                <audio controls autoplay>
+                    <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.mp4"
+                            type='audio/mp4'>
+                    <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
+                            type='audio/ogg; codecs=vorbis'>
+                </audio>
             </div>
+
+            <div class="box">
+
+                <button id="btnmem" class="small-button" onclick="member();"><i class="icon icon-user-circle-o">&#xf2be;</i> Se connecter</button>
+                    
+            </div>
+            <div class="box">
+                <button id="qr" class="small-button" onclick="window.location='https://beninrevele.bj';"> <i class="icon icon-qrcode">&#xe801;</i> Le Bénin !</button>
+                <button id="qr" class="small-button" onclick="window.location='https://www.gouv.bj';"> <i class="icon icon-qrcode">&#xe801;</i> Gouv.bj</button>
+            </div>
+
+            <div class="box" id="infologin">
+            </div>
+            <form autocomplete="off" name="login" action="$(link-login-only)" method="post" $(if chap-id) onSubmit="return doLogin()"
+                $(endif)>
+                <input type="hidden" name="dst" value="$(link-orig)" />
+                <input type="hidden" name="popup" value="true" />
+                <input class="username" name="username" type="text" value="" />
+                <input class="password" name="password" placeholder="Mot de passe" type="hidden" />
+                <button class="button" type="submit"><i class="icon icon-login">&#xe803;</i> Validation</button>
+            </form>
+
+            $(if trial == 'yes')
+            <div class="box">50Mo Gratuit Disponible <a style="text-decoration: underline; color:#2484ac;" href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)">Par ici</a></div>
+            $(endif)
+
+ <!-- Start slidersection -->
+ <div id="wowslider-container1">
+        <div class="ws_images"><ul>
+            <li><a href="http://wowslider.net"><img src="data1/images/1.jpg" alt="javascript photo gallery" title="1" id="wows1_0"/></a></li>
+            <li><img src="data1/images/2.jpg" alt="2" title="2" id="wows1_1"/></li>
+        </ul></div>
+        <div class="ws_bullets"><div>
+            <a href="#" title="1"><span><img src="data1/tooltips/1.jpg" alt="1"/>1</span></a>
+            <a href="#" title="2"><span><img src="data1/tooltips/2.jpg" alt="2"/>1</span></a>
+        </div></div><div class="ws_script" style="position:absolute;left:-99%"><a href="http://www.oneplussas.com">jquery slideshow</a> onePlus SAS</div>
+    <div class="ws_shadow"></div>
+    </div>	
+    <script type="text/javascript" src="engine1/wowslider.js"></script>
+    <script type="text/javascript" src="engine1/script.js"></script>
+    <!-- End slider-->
+
+            $(if error)<div class="notice">$(error)</div>$(endif)
+    </br>               
+
+  <a>Veuillez cliquer sur un forfait pour payer par MoMo, cliquez sur le type de forfait de votre choix (Ex 3-Go ou 8-Heures)</a>
+            <table class="table">
+                <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Forfaits Volumes</caption>
+                <tr>
+                    <th>Volumes</th>
+                    <th>Prix</th>
+                    <th>Validité</th>
+                </tr>
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c1f674afaa91825e882">1-Go</a></button></td>
+                    <td>100 Fcfa</td>
+                    <td>24-Heures</td>
+                </tr>
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c32674afaa91825e88e">3-Go</a></button></td>
+                    <td>200 Fcfa</td>
+                    <td>48-Heures</td>
+                </tr>
+            
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c43674afaa91825e8a8">9-Go</a></button></td>
+                    <td>500 Fcfa</td>
+                    <td>05-Jours</td>
+               </tr>
+               <tr>
+                <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c53674afaa91825e8b3">20-Go</a></button></td>
+                <td>1000 Fcfa</td>
+                <td>10-Jours</td>
+              </tr>
+              
+               
+            <table class="table">
+                <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Forfaits Horaires</caption>
+                <tr>
+                    <th>Temps</th>
+                    <th>Prix</th>
+                    <th>Validité</th>
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37e291e73f7154666dc290">1-Heure</a></button></td>
+                    <td>100 Fcfa</td>
+                    <td>01-Jour</td>
+                </tr>
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37beeae73f7154666da600">3-Heures</a></button></td>
+                    <td>200 Fcfa</td>
+                    <td>02-Jours</td>               
+                 </tr>
+                <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be93e73f7154666da5e7">8-Heures</a></button></td>
+                    <td>500 Fcfa</td>
+                    <td>05-Jours</td>
+                </tr>
+                 <tr>
+                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be60e73f7154666da5cc">24-Heures</a></button></td>
+                    <td>1000 Fcfa</td>
+                    <td>10-Jours</td>
+                </tr>
+
+
+
+
+                    <table class="table">
+                        <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Forfaits Illimités</caption>
+                        <tr>
+                            <th>Forfait</th>
+                            <th>Prix</th>
+                            <th>Validité</th>
+                        
+                        <tr>
+                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37bed0e73f7154666da5f8">24H</a></button></td>
+                            <td>300 Fcfa</td>
+                            <td>24-Heures</td>
+                        </tr>
+                        <tr>
+                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be2ee73f7154666da5c4">01-Semaine</a></button></td>
+                            <td>1000 Fcfa</td>
+                            <td>07-Jours</td>
+                        </tr>
+                        <tr>
+                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be15e73f7154666da5bf">01-Mois</a></button></td>
+                            <td>4500 Fcfa</td>
+                            <td>30-Jours</td>
+                        </tr>
+                </table>
+ </br>                   
+<button id="qr" class="small-button" onclick="window.location='https://tickwifi-frontend.vercel.app/recover.html?r=6a37bb77e73f7154666da50d';"></i> 🔑 Récupérer mon ticket</button>
+
+   </br>
+
+                    <!--Newcode teste-->
+                    <p style="font-size: 20px; font-weight: bold; margin-top: auto; margin-bottom: auto;"> </p>
+                    <div class="accordionMenu">
+                    
+
+
+                    <!-- 2nd menu -->
+                    <br/> 
+                     <input type="radio" name="trg1" id="acc2">
+                    <label for="acc2">Nos Autres Services</label>
+                    <div class="content">
+                    <div class="inner">
+                        <h3> &#9755; Impressions & Photocopies,
+                            Plastification,
+Réparation de téléphones et ordinateurs,
+Transfert et Retrait d'argent,
+Boissons fraîches et snacks</h3>
+
+                    </div>
+                    </div><br>
+                    
+        
+     <i>Notre Site Web: <a style="color:#2484ac; text-decoration:underline;" href="https://sasoneplus.com">En construction</a></i><br>
+     <i>Notre Whatsapp: <a style="color:#2484ac; text-decoration:underline;" href="https://wa.me/message/ESQVYL2LYULUE1">96 30 00 42</a></i><br>
+     <i>Assistance: <a style="color:#2484ac; text-decoration:underline;" href="https://tickwifi-frontend.vercel.app/portail.html?r=6a37bb77e73f7154666da50d">Discuter avec nous!</a></i><br>
+                    </div><br>
+                
+                   <!--Systeme de Messagerie-->
+        <script> 
+            window.intergramId = "Votre identifiant de chat unique";
+            window.intergramCustomizations = {
+                titleClosed: 'Messagerie',
+                titleOpen: '😃 Bonjour !',
+                introMessage: 'Bonjour à nouveau, Que puivons-vous faire pour vous ?', //Message de Bienvenue
+                autoResponse: 'un instant svp...', //Auto reponse
+                autoNoResponse: "Tous nos agents sont actuellement occupés veuillez patienter +229 51 10 10 03", //Message en cas d'absence ( 1 minute de silence )
+                mainColor: "#a80303", //Pour changer la couleur 'red', 'rgb(255,87,34)', etc
+                alwaysUseFloatingButton: true //Changez (false) en (true) pour utilisez le bouton flottant mobile
+            };
+        </script>
+        <script id="intergram" type="text/javascript" src="https://tickwifi-frontend.vercel.app/portail.html?r=6a37bb77e73f7154666da50d"></script>
+       <!--Fin Systeme de Messagerie-->
+       <!--/Newcode teste-->                
+        </div><br/>        
+        
+        <div class="box" style="color:#2484ac;">
+            <i></i><br/>
+            
+
+            <!-- onePlus SAS en Action-->
         </div>
 
-        <!-- CATEGORIE : FORFAITS HORAIRES -->
-        <div>
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-2 px-1">⏱ Forfaits Horaires</h2>
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">1 Heure <span class="text-xs text-slate-400 font-normal">(Valide 24H)</span></h3></div>
-                    <button id="pay-h1" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">100 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">3 Heures <span class="text-xs text-slate-400 font-normal">(Valide 48H)</span></h3></div>
-                    <button id="pay-h3" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">200 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">8 Heures <span class="text-xs text-slate-400 font-normal">(Valide 5 Jours)</span></h3></div>
-                    <button id="pay-h8" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">500 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                    <div><h3 class="font-bold">24 Heures <span class="text-xs text-slate-400 font-normal">(Valide 10 Jours)</span></h3></div>
-                    <button id="pay-h24" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">1000 F</button>
-                </div>
-            </div>
-        </div>
+<script type="text/javascript">
+var hostname = window.location.hostname;
+document.getElementById('title').innerHTML = hostname  + " Page d'authentification WiFi";
+document.login.username.focus();
 
-        <!-- CATEGORIE : FORFAITS ILLIMITÉS -->
-        <div>
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-2 px-1">🚀 Forfaits Illimités</h2>
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">Illimité 24H</h3></div>
-                    <button id="pay-i24h" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">300 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2 border-b border-slate-50">
-                    <div><h3 class="font-bold">Illimité 1 Semaine</h3></div>
-                    <button id="pay-i1s" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">1000 F</button>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                    <div><h3 class="font-bold">Illimité 1 Mois</h3></div>
-                    <button id="pay-i1m" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded-xl text-xs cursor-pointer">4500 F</button>
-                </div>
-            </div>
-        </div>
+var infologin = document.getElementById('infologin');
+infologin.innerHTML = "Masukkan Kode Voucher<br>kemudian klik login.";
 
-    </main>
+// login page 2 mode by onePlus SAS
+var username = document.login.username;
+var password = document.login.password;
 
-    <footer class="text-center py-6 text-xs text-slate-400">
-        &copy; <?php echo date('Y'); ?> DivinTick. Tous droits réservés.
-    </footer>
+username.placeholder = "Code";
 
-    <script>
-        const key = 'pk_live_OviqJ-sNT949ElpSqVztJ7IT';
-        const url = "http://gt.tc";
+// set password = username
+function setpass() {
+    var user = username.value
+    //user = user.toLowerCase();
+    username.value = user;
+    password.value = user;
+}
 
-        // Association des boutons aux vrais profils de votre base de données
-        const forfaits = [
-            { id: '#pay-v1', amt: 100, desc: 'Forfait Volume 1-Go', prof: '1-Go' },
-            { id: '#pay-v3', amt: 200, desc: 'Forfait Volume 3-Go', prof: '3-Go' },
-            { id: '#pay-v9', amt: 500, desc: 'Forfait Volume 9-Go', prof: '9-Go' },
-            { id: '#pay-v20', amt: 1000, desc: 'Forfait Volume 20-Go', prof: '20-Go' },
-            { id: '#pay-h1', amt: 100, desc: 'Forfait Horaire 1-Heure', prof: '01-Heure' },
-            { id: '#pay-h3', amt: 200, desc: 'Forfait Horaire 3-Heures', prof: '3-Heures' },
-            { id: '#pay-h8', amt: 500, desc: 'Forfait Horaire 8-Heures', prof: '8-Heures' },
-            { id: '#pay-h24', amt: 1000, desc: 'Forfait Horaire 24-Heures', prof: '24-Heures' },
-            { id: '#pay-i24h', amt: 300, desc: 'Forfait Illimite 24H', prof: 'Illimite-24H' },
-            { id: '#pay-i1s', amt: 1000, desc: 'Forfait Illimite 1Semaine', prof: 'Illimite-1Semaine' },
-            { id: '#pay-i1m', amt: 4500, desc: 'Forfait Illimite 1Mois', prof: 'Illimite-1Mois' }
-        ];
+username.onkeyup = setpass;
 
-        forfaits.forEach(f => {
-            FedaPay.init(f.id, {
-                public_key: key,
-                transaction: { amount: f.amt, description: f.desc },
-                onComplete: function(data) {
-                    if(data.status === 'approved') {
-                        window.location.href = url + "?id=" + data.transaction.id + "&profil=" + f.prof;
-                    }
-                }
-            });
-        });
-    </script>
+// change to voucher mode
+function voucher() {
+    username.focus();
+    username.onkeyup = setpass;
+    username.placeholder = "Cliquer sur [ se connecter ]";
+    username.style = "border-radius:3px;"
+    password.type = "hidden";
+    infologin.innerHTML = "Veuillez bien vouloir entrer vos informations d'identification puis cliquer sur Validation. Où défiler vers le bas pour effectuer un achat par MoMo";
+}
+
+// change to member mode
+function member() {
+    username.focus();
+    username.onkeyup = "";
+    username.placeholder = "Nom d'utilisateur";
+    username.style = "border-radius:3px 3px 0px 0px;"
+    password.type = "password";
+    infologin.innerHTML = "Veuillez bien vouloir entrer vos informations d'identification puis cliquer sur Validation.";
+}
+</script>
+
+
+
+
 </body>
 </html>
+
+
+
+
