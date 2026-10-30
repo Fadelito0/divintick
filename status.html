@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title id="title"></title>
+	    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+		<link href="dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="dist/css/style.css" rel="stylesheet">
+$(if refresh-timeout)
+<meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+$(endif)
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="theme-color" content="#3B5998" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+<link rel="stylesheet" href="style.css">
+<script language="JavaScript">
+
+$(if advert-pending == 'yes')
+    var popup = '';
+    function focusAdvert() {
+	if (window.focus) popup.focus();
+    }
+    function openAdvert() {
+	popup = open('$(link-advert)', 'hotspot_advert', '');
+	setTimeout("focusAdvert()", 1000);
+    }
+$(endif)
+    function openLogout() {
+	if (window.name != 'hotspot_status') return true;
+        open('$(link-logout)', 'hotspot_logout', 'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+	window.close();
+	return false;
+    }
+
+</script>
+</head>
+<body $(if advert-pending == 'yes')	onLoad="openAdvert()" $(endif) >
+<div class="main">
+    
+$(if login-by == 'trial')
+<div style="margin-top:20px; text-align: center;"><h3>Bienvenue</h3><i style="font-size:50px;" class="icon icon-user-circle-o">&#xf2be;</i> <h3>Compte d'essai</h3></div><br>
+$(elif login-by != 'mac')
+<div style="margin-top:20px; text-align: center;"><h3>Bienvenue</h3><i style="font-size:50px;" class="icon icon-user-circle-o">&#xf2be;</i> <h3 id="user">$(username)</h3></div><br>
+$(endif)
+
+    <div class="box"> 
+ <button id="qr" class="small-button" onclick="window.location='https://wa.me/message/ESQVYL2LYULUE1';"> <i class="icon icon-qrcode">&#xe801;</i> Nos services</button>
+        <button class="small-button" onclick="window.location='https://wwww.divinshopping.com';"> <i class="icon icon-info">&#xe801;</i> Découvertes...</button>
+    </div>
+    
+<form action="$(link-logout)" name="logout" onSubmit="return openLogout()">
+<div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+								<span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
+								<input class="form-control" readonly disabled value=" Session encours: $(uptime)">
+                                </div>
+                                                                $(if session-timeout)
+								<div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-history fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Temps restant: $(session-timeout)">
+                                </div>
+                                                                $(endif)
+
+                                                                $(if remain-bytes-total)
+                                                                <div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-upload fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Data restant: $(remain-bytes-total-nice)"> 
+                                                                </div>
+                                                                $(endif)
+
+                                                                $(if session-timeout == '')
+                                                                <div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-at fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Temps illimité durant Data restant">
+                                </div>
+                                                                $(endif)
+
+                                                                $(if remain-bytes-total == '')
+                                                                <div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-at fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Data illimité durant temps restant">
+                                </div>
+                                                                $(endif)                                                                       
+								                                $(if login-by == 'trial')
+								<div style="margin-top:5px;"></div>
+								<div class="input-group ">
+									<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Compte d'essai">
+								</div>
+								                                $(elif login-by != 'mac')
+								<div style="margin-top:5px;"></div>
+								<div class="input-group ">
+									<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Compte / Forfait: $(username)">
+								</div>
+                                                                $(endif)
+								
+								<div style="margin-top:5px;"></div>
+								<div class="input-group ">
+									<span class="input-group-addon"><i class="fa fa-star fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Adresse IP: $(ip)">
+								</div>
+								
+								<div style="margin-top:5px;"></div>
+								<div class="input-group ">
+									<span class="input-group-addon"><i class="fa fa-terminal fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Adresse Mac: $(mac)">
+                                </div>
+                                                                
+                                <div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Paquets utilisés: $(packets-total)">
+								</div>
+								
+									<div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-upload fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Téléversement: $(bytes-in-nice)">
+								</div>                                 
+                                
+								<div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-download fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Téléchargement: $(bytes-out-nice)">
+								</div>
+                                                                
+								<div style="margin-top:5px;"></div>
+								<div class="input-group has-error">
+									<span class="input-group-addon"><i class="fa fa-download fa-fw"></i></span>
+									<input class="form-control" readonly disabled value="Consommation totale: $(bytes-total-nice)">
+                                </div>
+                                                                 $(if remain-time)
+                                
+                                                                $(endif)
+								<button type="submit" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-default btn-block">Deconnexion</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+$(if login-by-mac != 'yes')
+<br>
+<!-- user manager link. if user manager resides on other router, replace $(hostname) by its address
+<button onclick="document.location='http://$(hostname)/user?subs='; return false;">status</button>
+<!-- end of user manager link -->
+
+$(endif)
+</form>
+<!--Systeme de Messagerie-->
+<script> 
+    window.intergramId = "Votre identifiant de chat unique";
+    window.intergramCustomizations = {
+        titleClosed: 'Messagerie',
+        titleOpen: 'Bonjour !',
+        introMessage: 'Bonjours à nouveau Que pouvons-nous faire pour vous ?', //Message de Bienvenue
+        autoResponse: 'un instant svp...', //Auto reponse
+        autoNoResponse: "Tous nos agents sont actuellement occupés  +229 51 10 10 03", //Message en cas d'absence ( 1 minute de silence )
+        mainColor: "#a80303", // Pour changer la couleur 'red', 'rgb(255,87,34)', etc
+        alwaysUseFloatingButton: false // Changez (false) en (true) pour utilisez le bouton flottant mobile
+    };
+</script>
+<script id="intergram" type="text/javascript" src="https://www.intergram.xyz/js/widget.js"></script>
+<!--Fin Systeme de Messagerie-->
+</div>
+<script type="text/javascript">
+    document.getElementById('title').innerHTML = window.location.hostname + " Page des statistiques d'usage WiFi";
+//get validity
+    var usr = document.getElementById('user').innerHTML
+    var url = "https://example.com/status/status.php?name="; // http://ip-server-mikhmon/mikhmonv2/status/status.php?name=
+    var SessionName = "wifijoss"
+    var getvalid = url+usr+"&session="+SessionName
+    document.getElementById('exp').src = getvalid;
+        
+</script>
+</body>
+</html>

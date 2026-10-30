@@ -1,0 +1,404 @@
+ <!-- 1st menu  -->
+                    <input type="radio" name="trg1" id="acc1" >
+                    <label class="icon2 icon-ticket" for="acc1">Equipements </label>
+                    <div class="content">
+                    <div class="inner">
+                    
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Outils Réseau</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>Pince de sertissage</td>
+                        <td>Neuf</td>
+                        <td>10.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>Conneteur RJ45 Cat5e</td>
+                        <td>Neuf</td>
+                        <td>100 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>Conneteur RJ45 Cat6e</td>
+                        <td>Neuf</td>
+                        <td>200 Fcfa</td>
+                </div>
+                </table><br> 
+
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Routeurs</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>Redmi AX1800 (WiFi-6)</td>
+                        <td>Neuf</td>
+                        <td>60.000 Fcfa</td>
+                    </tr> 
+                </div>
+                </table><br>         
+
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Distribution WiFi HD</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>AP-211 (2.4GHz@30dbm@14dBi)</td>
+                        <td>Neuf</td>
+                        <td>78.000 Fcfa</td>
+                    </tr> 
+                </div>
+                </table>
+
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Interconnexion (802.11)</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>AP-513 (5.8GHz@30dbm@14dBi)</td>
+                        <td>Neuf</td>
+                        <td>88.000 Fcfa</td>
+                    </tr> 
+                </div>
+                </table></br>
+                
+                <input type="radio" name="trg12" id="acc12" >
+                <label class="icon2 icon-ticket" for="acc12">Mikrotik </label>
+                <div class="content">
+                <div class="inner">
+                
+                <table class="table">
+                <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Routeurs Filaires</caption>
+                <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                 <tr>
+                        <td>hEX</td>
+                        <td>Neuf</td>
+                        <td>87.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>hEX S</td>
+                        <td>Neuf</td>
+                        <td>96.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>RB5009UG+S+IN</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>RB5009UPr+S+IN</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>RB1100AHx4</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>RB1100AHx4 Dude</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 </div>   
+                 </table>
+                 
+                 <table class="table">
+                 <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Routeurs Sans Fils</caption>
+                 <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                 <tr>
+                        <td>RB951Ui</td>
+                        <td>Neuf</td>
+                        <td>78.000 Fcfa</td>
+                 </tr>
+                 <tr>
+                        <td>RB951G</td>
+                        <td>Neuf</td>
+                        <td>93.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>hAP ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>hAP ac2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>hAP ac3</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>hAP ax2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>hAP ax3</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>cAP XL ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                <tr>
+                        <td>Audience</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                </tr>
+                </div>   
+                </table>
+
+                 <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Distribution WiFi HD</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>mAntBox 2 12s</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">PtmP APs (TDMA)</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>mANTBox 15s</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>mANTBox 19s</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>mANTBox 52 15s</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>OmniTIK 5 PoE ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    
+                 <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">PtP & PtmP CPEs (TDMA)</caption>
+                    <tr>
+                        <td>SXTsq 5 hp</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>SXTsq 5 ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>DISC Lite5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>DISC Lite5 ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG 5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG HP5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG XL HP5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG 5 ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG XL 5 ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LHG XL 52 ac</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                 </div>   
+                 </table>
+                 </div>
+                 </div>
+                 
+                 <input type="radio" name="trg12" id="acc13" >
+                 <label class="icon2 icon-ticket" for="acc13">Ubiquiti </label>
+                 <div class="content">
+                 <div class="inner">
+                 
+                 <table class="table">                   
+                 <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Routeurs</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>Edge Router</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 </div>   
+                 </table>
+
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">WiFi Entreprise HD</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>UniFI</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                 </tr>
+                 </div>   
+                 </table>
+                 
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">PtmP APs (TDMA)</caption>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Etat</th>
+                        <th>Prix</th>
+                    <tr>
+                        <td>LiteAP 120°</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LiteAP GPS</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>Rocket AC Prism Gen2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    </table>
+                     
+                    <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">PtP & PtmP CPEs (TDMA)</caption>
+                    <tr>
+                        <td>LiteBeam M5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>LiteBeam 5AC Gen2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>NanoSation M5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>NanoSation 5AC</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>NanoBeam M5</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                   </tr>
+                   <tr>
+                        <td>NanoBeam 5AC Gen2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>PowerBeam M5-300</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>PowerBeam M5-400</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>PowerBeam 5AC Gen2</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                   </tr>
+                   <tr>
+                        <td>PowerBeam AC 500</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                   </tr>
+                   <tr>
+                        <td>PowerBeam AC 620</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                        
+                   <table class="table">
+                    <caption style="font-size: 20px; font-weight: bold; margin-bottom:5px;">Antennes à Haut Gain</caption>
+                    <tr>
+                        <td>AM-5AC21-60</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>AM-5AC22-45</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                    <tr>
+                        <td>AP-5AC-90-HD</td>
+                        <td>Neuf</td>
+                        <td>00.000 Fcfa</td>
+                    </tr>
+                        
+                   </tr>
+                   </div>   
+                   </table><br>
+                   
+                   </div>
+                   </div>
+                   </div>
+                   </div>

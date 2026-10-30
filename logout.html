@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title id="title"></title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="theme-color" content="#3B5998" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<script language="JavaScript">
+
+    function openLogin() {
+	if (window.name != 'hotspot_logout') return true;
+	open('$(link-login)', '_blank', '');
+	window.close();
+	return false;
+    }
+
+</script>
+
+<div class="main">
+<div class="box">
+    <div style="margin-top:30px; text-align: center;"><i style="font-size:50px;" class="icon icon-user-circle-o">&#xf2be;</i> <h3 id="user">$(username)</h3></div><br>
+    <b style="margin-top:20px;">Merci de votre passage, nous esperons vous revoir bientôt. Portez-vous bien!</b> <br><br>
+</div>
+
+<div class="box">
+        <button id="qr" class="small-button" onclick="window.location='https://wa.me/message/64TXTCHQSVVRP1';"> <i class="icon icon-qrcode">&#xe801;</i> Nos services</button>
+        <button class="small-button" onclick="window.location='https://wwww.oneplussas.com';"> <i class="icon icon-info">&#xe801;</i> Découvertes...</button>
+    </div>
+
+<table class="table2">
+    <tr><td align="right">Address IP  <i class="icon icon-sitemap">&#xf0e8;</i> </td><td>$(ip)</td></tr>
+    <tr><td align="right">Address MAC <i class="icon icon-barcode">&#xe80a;</i>  </td><td>$(mac)</td></tr>
+    <tr><td align="right">Téléversement <i class="icon icon-upload">&#xe808;</i> </td><td>$(bytes-in-nice)</td></tr>
+    <tr><td align="right">Téléchargement <i class="icon icon-download">&#xe809;</i> </td><td>$(bytes-out-nice)</td></tr>
+    <tr><td align="right">Temps utilisés <i class="icon icon-exchange">&#xf0ec;</i> </td><td>$(uptime)</td></tr>
+    <tr><td align="right">Data utilisées <i class="icon icon-download">&#xe809;</i> </td><td>$(bytes-out-nice)</td></tr>
+$(if session-time-left)
+    <tr><td align="right">Temps restants <i class="icon icon-clock">&#xe805;</i> </td><td>$(session-time-left)</td></tr>
+$(endif)
+$(if remain-bytes-total)
+    <tr><td align="right">Data restantes <i class="icon icon-hourglass-2">&#xf252;</i> </td><td>$(remain-bytes-total-nice)</td></tr>
+$(endif)
+</table>
+<br>
+<form action="$(link-login)" name="login" onSubmit="return openLogin()">
+        <button class="button" type="submit"><i class="icon icon-login">&#xe803;</i> Réconnexion...</button>
+</form>
+</div>
+<script type="text/javascript">
+	document.getElementById('title').innerHTML = window.location.hostname + "Page de déconnection & statistiques";
+</script>
+</body>
+</html>
