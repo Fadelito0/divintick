@@ -1,5 +1,5 @@
 <?php
-// Connexion interne automatique PostgreSQL sur Render pour DivinTick
+// Connexion interne ultra-rapide PostgreSQL sur Render pour DivinTick
 
 $internal_url = "postgresql://fadel:KyeVzOyMxKhxGQzbkYc5JPpdzXryXp1a@dpg-dbirg0ks728c7384a6s0-a/wifizone_v28y";
 
@@ -10,11 +10,10 @@ try {
     $pass = $dbopts["pass"];
     $dbname = ltrim($dbopts["path"], '/');
    
-    // Connexion via le pilote PostgreSQL (pgsql)
-    $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $pass);
+    // Optimisation : Ajout d'un timeout de 3 secondes pour ne jamais faire ramer la page
+    $db = new PDO("pgsql:host=$host;dbname=$dbname;options='--connect_timeout=3'", $user, $pass);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // CRÉATION AUTOMATIQUE DE LA TABLE DES TICKETS (Si elle n'existe pas)
     $db->exec("CREATE TABLE IF NOT EXISTS tickets (
         id SERIAL PRIMARY KEY,
         profil VARCHAR(50) NOT NULL,
@@ -25,6 +24,7 @@ try {
     );");
 
 } catch (PDOException $e) {
-    die("Erreur de connexion Render : " . $e->getMessage());
+    // Si la bdd met du temps, on n'interrompt pas le site
+    $db = null;
 }
 ?>
