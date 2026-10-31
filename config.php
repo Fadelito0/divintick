@@ -1,15 +1,14 @@
 <?php
-// Configuration locale de la base de données de DivinTick
-
-$host = 'localhost';
-$dbname = 'if0_43311106_wifizone';
-$user = 'if0_43311106';
-$password = '96300042Fadel';
+// Connexion interne PostgreSQL sur Render
+$dbname = "wifizone";
+$user = "fadel";
+$password = "KyeVzOyMxKhxGQzbkYc5JPpdzXryXp1a";
 
 try {
-    $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    // Sous Render, si le site et la bdd sont au même endroit, on utilise l'URL interne automatique
+    $db = new PDO("pgsql:dbname=$dbname;host=localhost", $user, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Erreur de connexion à la base de données de DivinTick : " . $e->getMessage());
+    die("Erreur de connexion : " . $e->getMessage());
 }
 ?>
