@@ -1,7 +1,6 @@
 <?php
 require_once 'config.php';
 
-// SÉCURITÉ : Mot de passe administrateur
 $mot_de_passe_admin = "ADMIN_DIVINTICK_2026";
 
 session_start();
@@ -35,21 +34,16 @@ if (isset($_FILES['csv_file'])) {
     if ($_FILES['csv_file']['error'] == 0) {
         $filename = $_FILES['csv_file']['tmp_name'];
         $file = fopen($filename, 'r');
-       
-        // On saute la première ligne (en-tête)
         fgetcsv($file, 0, ',');
-       
         $count = 0;
         while (($data = fgetcsv($file, 0, ',')) !== FALSE) {
             if (isset($data[0]) && isset($data[1]) && isset($data[2])) {
                 $username = trim($data[0]);
                 $password = trim($data[1]);
-                $profil   = trim($data[2]); // Prend '1-Go', '01-Heure', etc.
+                $profil   = trim($data[2]);
                
-                // Vérification anti-doublon
                 $check = $db->prepare("SELECT id FROM tickets WHERE username = ? AND password = ?");
                 $check->execute([$username, $password]);
-               
                 if (!$check->fetch()) {
                     $req = $db->prepare("INSERT INTO tickets (profil, username, password, statut) VALUES (?, ?, ?, 'disponible')");
                     $req->execute([$profil, $username, $password]);
@@ -59,9 +53,7 @@ if (isset($_FILES['csv_file'])) {
         }
         fclose($file);
         $message_import = "🎉 Succès : $count tickets ont été importés avec succès !";
-    } else {
-        $message_import = "❌ Erreur lors du transfert du fichier.";
-    }
+    } else { $message_import = "❌ Erreur lors du transfert du fichier."; }
 }
 
 // --- CALCULS ET STATISTIQUES ---
@@ -77,85 +69,107 @@ while($v = $ventes_req->fetch(PDO::FETCH_ASSOC)) {
     if(isset($tarifs[$v['profil']])) { $chiffre_affaire += ($v['total'] * $tarifs[$v['profil']]); }
 }
 
+// Récupération globale propre
 $stats_req = $db->query("SELECT profil,
     SUM(CASE WHEN statut = 'disponible' THEN 1 ELSE 0 END) as dispo,
     SUM(CASE WHEN statut = 'vendu' THEN 1 ELSE 0 END) as vendu
     FROM tickets GROUP BY profil ORDER BY profil ASC");
 $stats = $stats_req->fetchAll(PDO::FETCH_ASSOC);
 
-$historique_req = $db->query("SELECT profil, username, date_vente FROM tickets WHERE statut = 'vendu' ORDER BY date_vente DESC LIMIT 10");
-$historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
+// On crée une liste propre avec tous vos profils pour être sûr qu'ils apparaissent tous même si le stock est à 0
+$liste_complete_forfaits = [];
+foreach($tarifs as $nom_prof => $prix_prof) {
+    $liste_complete_forfaits[$nom_prof] = ['dispo' => 0, 'vendu' => 0, 'prix' => $prix_prof];
+}
+foreach($stats as $s) {
+    if(isset($liste_complete_forfaits[$s['profil']])) {
+        $liste_complete_forfaits[$s['profil']]['dispo'] = $s['dispo'];
+        $liste_complete_forfaits[$s['profil']]['vendu'] = $s['vendu'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>DivinTick - Tableau de Bord</title>
+    <title>DivinTick - Vos Tarifs & Stocks</title>
     <script src="https://jsdelivr.net"></script>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 antialiased p-4 sm:p-6">
+<body class="bg-slate-900 min-h-screen text-slate-100 antialiased p-4 sm:p-6">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto space-y-6">
        
-        <!-- En-tête -->
-        <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+        <!-- Bar de Navigation Haute (Même style pro) -->
+        <div class="flex justify-between items-center bg-slate-800 p-6 rounded-2xl border border-slate-700">
             <div>
-                <h1 class="text-2xl font-black text-slate-900">📊 Tableau de Bord</h1>
-                <p class="text-xs text-slate-400">Gestion de vos stocks et ventes Divin Cyber Café</p>
+                <h1 class="text-xl font-black tracking-wide text-white">📋 Mes tarifs</h1>
+                <p class="text-xs text-slate-400 mt-1">DivinTick &rsaquo; Gestion des stocks en direct</p>
             </div>
-            <a href="dashboard.php?logout=1" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Déconnexion</a>
+            <div class="flex items-center gap-4">
+                <div class="bg-blue-600/20 border border-blue-500/30 px-4 py-2 rounded-xl text-right">
+                    <span class="text-[10px] text-blue-400 block font-bold uppercase tracking-wider">Solde vendable</span>
+                    <span class="text-emerald-400 font-mono font-black text-sm"><?php echo number_format($chiffre_affaire, 0, ',', ' '); ?> F CFA</span>
+                </div>
+                <a href="dashboard.php?logout=1" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors">Sortir</a>
+            </div>
         </div>
 
         <?php if(!empty($message_import)): ?>
-            <div class="bg-emerald-100 border border-emerald-300 text-emerald-800 p-4 rounded-xl text-sm font-semibold">
+            <div class="bg-blue-600/10 border border-blue-500/30 text-blue-400 p-4 rounded-xl text-sm font-semibold">
                 <?php echo $message_import; ?>
             </div>
         <?php endif; ?>
 
-        <!-- Zone de Téléchargement CSV Direct -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3">📥 Ajouter de nouveaux tickets (CSV)</h2>
-            <form method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4 items-center">
-                <input type="file" name="csv_file" accept=".csv" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" required>
-                <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl text-xs transition-colors cursor-pointer whitespace-nowrap">
-                    Importer le fichier
-                </button>
+        <!-- Importateur Rapide Express -->
+        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h3 class="font-bold text-white text-sm">📥 Recharger des tickets</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Glissez le CSV de votre MikroTik pour alimenter automatiquement les cartes.</p>
+            </div>
+            <form method="POST" enctype="multipart/form-data" class="flex items-center gap-3 w-full md:w-auto">
+                <input type="file" name="csv_file" accept=".csv" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" required>
+                <button type="submit" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-1.5 px-4 rounded-xl text-xs border border-slate-600 transition-colors cursor-pointer">Importer</button>
             </form>
         </div>
 
-        <!-- Chiffre d'Affaires -->
-        <div class="bg-blue-600 p-6 rounded-2xl shadow-md text-white text-center sm:text-left">
-            <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">Chiffre d'Affaires Estimé</p>
-            <p class="text-4xl font-black mt-1"><?php echo number_format($chiffre_affaire, 0, ',', ' '); ?> <span class="text-xl">F CFA</span></p>
-        </div>
+        <!-- GRILLE DE CARTES STYLE TICKET WIFI ZONE -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <?php foreach($liste_complete_forfaits as $nom_forfait => $f): ?>
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 p-5 flex flex-col justify-between relative shadow-lg overflow-hidden group hover:border-blue-500/50 transition-all">
+               
+                <!-- Badge prix d'en-tête -->
+                <div class="absolute top-4 right-4 bg-blue-600/20 border border-blue-500/30 text-blue-400 text-xs font-black px-3 py-1 rounded-full font-mono">
+                    ● <?php echo $f['prix']; ?> FCFA
+                </div>
 
-        <!-- Grille des Stocks -->
-        <div>
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3 px-1">📦 État de vos Stocks de Tickets</h2>
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b border-slate-100">
-                            <th class="p-4">Profil Forfait</th>
-                            <th class="p-4 text-center">En Stock (Dispo)</th>
-                            <th class="p-4 text-center">Vendus</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50 text-sm">
-                        <?php foreach($stats as $s): ?>
-                        <tr>
-                            <td class="p-4 font-bold text-slate-700"><?php echo htmlspecialchars($s['profil']); ?></td>
-                            <td class="p-4 text-center font-mono font-bold <?php echo ($s['dispo'] <= 5) ? 'text-red-600 bg-red-50' : 'text-emerald-600'; ?>">
-                                <?php echo $s['dispo']; ?>
-                            </td>
-                            <td class="p-4 text-center font-mono text-slate-400"><?php echo $s['vendu']; ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                <!-- Section Info Forfait -->
+                <div class="space-y-4">
+                    <div>
+                        <h2 class="text-lg font-black tracking-tight text-white"><?php echo htmlspecialchars($nom_forfait); ?></h2>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">⚡ DIVIN CYBER CAFÉ</span>
+                    </div>
 
-    </div>
-</body>
-</html>
+                    <!-- Ligne Info Stock -->
+                    <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                        <span class="text-xs text-slate-400 flex items-center gap-1.5">📂 Tickets disponibles</span>
+                        <span class="font-mono font-black text-xl <?php echo ($f['dispo'] == 0) ? 'text-red-500' : (($f['dispo'] <= 5) ? 'text-amber-500' : 'text-blue-400'); ?>">
+                            <?php echo $f['dispo']; ?>
+                        </span>
+                    </div>
+
+                    <!-- Liens de paiement dynamiques -->
+                    <div class="text-[11px] bg-slate-900/30 border border-slate-700/30 p-2.5 rounded-xl space-y-1">
+                        <span class="text-slate-500 font-bold block">🔗 Lien de vente lié :</span>
+                        <code class="text-blue-400 block break-all select-all font-mono">https://onrender.com<?php echo urlencode($nom_forfait); ?></code>
+                    </div>
+                </div>
+
+                <!-- Boutons d'Action Inférieurs (Même design) -->
+                <div class="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-slate-700/50 text-center text-xs font-bold">
+                    <div class="bg-slate-700/40 border border-slate-600/50 py-2 rounded-xl text-slate-300">
+                        Vendus : <span class="font-mono text-white"><?php echo $f['vendu']; ?></span>
+                    </div>
+                    <?php if($f['dispo'] == 0): ?>
+                        <div class="bg-red-500/10 border border-red-500/30 py-2 rounded-xl text-red-400 text-[10px] uppercase font-bold flex items-center justify-center animate-pulse">Vide</div>
+                    <?php else: ?>
+                        <div class="bg-emerald-500/10 border border-emerald-500/30 py-2 rounded-xl text-emerald-400 text-[10px] uppercase font-bold flex items-center justify-center">Actif</div>
