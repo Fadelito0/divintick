@@ -1,10 +1,9 @@
 <?php
 require_once 'config.php';
 
-// SÉCURITÉ : Créez votre mot de passe administrateur ici
+// SÉCURITÉ : Mot de passe administrateur
 $mot_de_passe_admin = "ADMIN_DIVINTICK_2026";
 
-// Système de connexion très simple
 session_start();
 if (isset($_GET['logout'])) { session_destroy(); header("Location: dashboard.php"); exit; }
 if (isset($_POST['password'])) {
@@ -12,7 +11,6 @@ if (isset($_POST['password'])) {
     else { $erreur = "Mot de passe incorrect !"; }
 }
 
-// Si l'admin n'est pas connecté, on affiche la page de connexion
 if (!isset($_SESSION['admin'])) {
 ?>
 <!DOCTYPE html>
@@ -31,10 +29,42 @@ if (!isset($_SESSION['admin'])) {
 </body></html>
 <?php exit; }
 
-// --- CODE DE L'ADMINISTRATION SI CONNECTÉ ---
+// --- LOGIQUE D'IMPORTATION DIRECTE DU CSV ---
+$message_import = "";
+if (isset($_FILES['csv_file'])) {
+    if ($_FILES['csv_file']['error'] == 0) {
+        $filename = $_FILES['csv_file']['tmp_name'];
+        $file = fopen($filename, 'r');
+       
+        // On saute la première ligne (en-tête)
+        fgetcsv($file, 0, ',');
+       
+        $count = 0;
+        while (($data = fgetcsv($file, 0, ',')) !== FALSE) {
+            if (isset($data[0]) && isset($data[1]) && isset($data[2])) {
+                $username = trim($data[0]);
+                $password = trim($data[1]);
+                $profil   = trim($data[2]); // Prend '1-Go', '01-Heure', etc.
+               
+                // Vérification anti-doublon
+                $check = $db->prepare("SELECT id FROM tickets WHERE username = ? AND password = ?");
+                $check->execute([$username, $password]);
+               
+                if (!$check->fetch()) {
+                    $req = $db->prepare("INSERT INTO tickets (profil, username, password, statut) VALUES (?, ?, ?, 'disponible')");
+                    $req->execute([$profil, $username, $password]);
+                    $count++;
+                }
+            }
+        }
+        fclose($file);
+        $message_import = "🎉 Succès : $count tickets ont été importés avec succès !";
+    } else {
+        $message_import = "❌ Erreur lors du transfert du fichier.";
+    }
+}
 
-// 1. Calcul du chiffre d'affaires total approximatif
-// (On associe chaque profil vendu à son prix réel pour calculer vos gains)
+// --- CALCULS ET STATISTIQUES ---
 $tarifs = [
     '1-Go' => 100, '3-Go' => 200, '9-Go' => 500, '20-Go' => 1000,
     '01-Heure' => 100, '3-Heures' => 200, '8-Heures' => 500, '24-Heures' => 1000,
@@ -47,14 +77,12 @@ while($v = $ventes_req->fetch(PDO::FETCH_ASSOC)) {
     if(isset($tarifs[$v['profil']])) { $chiffre_affaire += ($v['total'] * $tarifs[$v['profil']]); }
 }
 
-// 2. Récupération des statistiques des tickets (Disponibles vs Vendus)
 $stats_req = $db->query("SELECT profil,
     SUM(CASE WHEN statut = 'disponible' THEN 1 ELSE 0 END) as dispo,
     SUM(CASE WHEN statut = 'vendu' THEN 1 ELSE 0 END) as vendu
     FROM tickets GROUP BY profil ORDER BY profil ASC");
 $stats = $stats_req->fetchAll(PDO::FETCH_ASSOC);
 
-// 3. Récupération des 10 dernières ventes
 $historique_req = $db->query("SELECT profil, username, date_vente FROM tickets WHERE statut = 'vendu' ORDER BY date_vente DESC LIMIT 10");
 $historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -78,7 +106,24 @@ $historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
             <a href="dashboard.php?logout=1" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Déconnexion</a>
         </div>
 
-        <!-- Carte Chiffre d'Affaires -->
+        <?php if(!empty($message_import)): ?>
+            <div class="bg-emerald-100 border border-emerald-300 text-emerald-800 p-4 rounded-xl text-sm font-semibold">
+                <?php echo $message_import; ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Zone de Téléchargement CSV Direct -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3">📥 Ajouter de nouveaux tickets (CSV)</h2>
+            <form method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4 items-center">
+                <input type="file" name="csv_file" accept=".csv" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" required>
+                <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl text-xs transition-colors cursor-pointer whitespace-nowrap">
+                    Importer le fichier
+                </button>
+            </form>
+        </div>
+
+        <!-- Chiffre d'Affaires -->
         <div class="bg-blue-600 p-6 rounded-2xl shadow-md text-white text-center sm:text-left">
             <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">Chiffre d'Affaires Estimé</p>
             <p class="text-4xl font-black mt-1"><?php echo number_format($chiffre_affaire, 0, ',', ' '); ?> <span class="text-xl">F CFA</span></p>
@@ -94,7 +139,6 @@ $historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
                             <th class="p-4">Profil Forfait</th>
                             <th class="p-4 text-center">En Stock (Dispo)</th>
                             <th class="p-4 text-center">Vendus</th>
-                            <th class="p-4 text-right">Alerte</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-50 text-sm">
@@ -105,13 +149,6 @@ $historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
                                 <?php echo $s['dispo']; ?>
                             </td>
                             <td class="p-4 text-center font-mono text-slate-400"><?php echo $s['vendu']; ?></td>
-                            <td class="p-4 text-right">
-                                <?php if($s['dispo'] <= 5): ?>
-                                    <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2.5 py-1 rounded-full animate-pulse">🚨 Recharger !</span>
-                                <?php else: ?>
-                                    <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">OK</span>
-                                <?php endif; ?>
-                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -119,27 +156,6 @@ $historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Historique des 10 dernières ventes -->
-        <div>
-            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3 px-1">🕒 10 Dernières Ventes Automatiques</h2>
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 space-y-3">
-                <?php if(empty($historique)): ?>
-                    <p class="text-center text-sm text-slate-400 py-4">Aucune vente enregistrée pour le moment.</p>
-                <?php else: ?>
-                    <?php foreach($historique as $h): ?>
-                    <div class="flex justify-between items-center py-2 border-b border-slate-50 last:border-0 text-xs sm:text-sm">
-                        <div>
-                            <span class="font-bold text-slate-800"><?php echo htmlspecialchars($h['profil']); ?></span>
-                            <span class="text-slate-400 text-xs ml-2">Client : <span class="font-mono text-blue-600"><?php echo htmlspecialchars($h['username']); ?></span></span>
-                        </div>
-                        <span class="text-slate-400 text-xs font-mono"><?php echo date('d/m H:i', strtotime($h['date_vente'])); ?></span>
-                    </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
-        </div>
-
     </div>
-
 </body>
 </html>
