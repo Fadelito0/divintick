@@ -102,23 +102,23 @@
                     <th>Validité</th>
                 </tr>
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c1f674afaa91825e882">1-Go</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">1-Go</a></button></td>
                     <td>100 Fcfa</td>
                     <td>24-Heures</td>
                 </tr>
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c32674afaa91825e88e">3-Go</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">3-Go</a></button></td>
                     <td>200 Fcfa</td>
                     <td>48-Heures</td>
                 </tr>
             
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c43674afaa91825e8a8">9-Go</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">9-Go</a></button></td>
                     <td>500 Fcfa</td>
                     <td>05-Jours</td>
                </tr>
                <tr>
-                <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a732c53674afaa91825e8b3">20-Go</a></button></td>
+                <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">20-Go</a></button></td>
                 <td>1000 Fcfa</td>
                 <td>10-Jours</td>
               </tr>
@@ -131,22 +131,22 @@
                     <th>Prix</th>
                     <th>Validité</th>
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37e291e73f7154666dc290">1-Heure</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">1-Heure</a></button></td>
                     <td>100 Fcfa</td>
                     <td>01-Jour</td>
                 </tr>
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37beeae73f7154666da600">3-Heures</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">3-Heures</a></button></td>
                     <td>200 Fcfa</td>
                     <td>02-Jours</td>               
                  </tr>
                 <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be93e73f7154666da5e7">8-Heures</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">8-Heures</a></button></td>
                     <td>500 Fcfa</td>
                     <td>05-Jours</td>
                 </tr>
                  <tr>
-                    <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be60e73f7154666da5cc">24-Heures</a></button></td>
+                    <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">24-Heures</a></button></td>
                     <td>1000 Fcfa</td>
                     <td>10-Jours</td>
                 </tr>
@@ -162,17 +162,17 @@
                             <th>Validité</th>
                         
                         <tr>
-                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37bed0e73f7154666da5f8">24H</a></button></td>
+                            <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">24H</a></button></td>
                             <td>300 Fcfa</td>
                             <td>24-Heures</td>
                         </tr>
                         <tr>
-                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be2ee73f7154666da5c4">01-Semaine</a></button></td>
+                            <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">01-Semaine</a></button></td>
                             <td>1000 Fcfa</td>
                             <td>07-Jours</td>
                         </tr>
                         <tr>
-                            <td><button id="btnmem" onclick="member();"><a href="https://api.tickwifi.com/api/pay/checkout/6a37be15e73f7154666da5bf">01-Mois</a></button></td>
+                            <td><button id="btnmem" onclick="member();"><a href="https://onrender.com">01-Mois</a></button></td>
                             <td>4500 Fcfa</td>
                             <td>30-Jours</td>
                         </tr>
