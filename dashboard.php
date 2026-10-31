@@ -1,130 +1,144 @@
 <?php
 require_once 'config.php';
 
-try {
-    // 1. Calcul du revenu total
-    $res_revenu = $db->query("SELECT COUNT(*) * 100 as total FROM tickets WHERE statut = 'vendu'"); // Version simplifiée
-    // Note : Pour un calcul précis par forfait, il faudrait une colonne 'prix' dans la BDD.
-   
-    // 2. Compter le nombre total de tickets vendus ce mois-ci
-    $res_vendus = $db->query("SELECT COUNT(*) FROM tickets WHERE statut = 'vendu'");
-    $total_vendus = $res_vendus->fetchColumn();
+// SÉCURITÉ : Créez votre mot de passe administrateur ici
+$mot_de_passe_admin = "ADMIN_DIVINTICK_2026";
 
-    // 3. Compter le nombre de tickets encore disponibles en stock
-    $res_stock = $db->query("SELECT COUNT(*) FROM tickets WHERE statut = 'disponible'");
-    $total_stock = $res_stock->fetchColumn();
-   
-} catch (Exception $e) {
-    die("Erreur de statistiques : " . $e->getMessage());
+// Système de connexion très simple
+session_start();
+if (isset($_GET['logout'])) { session_destroy(); header("Location: dashboard.php"); exit; }
+if (isset($_POST['password'])) {
+    if ($_POST['password'] === $mot_de_passe_admin) { $_SESSION['admin'] = true; }
+    else { $erreur = "Mot de passe incorrect !"; }
 }
+
+// Si l'admin n'est pas connecté, on affiche la page de connexion
+if (!isset($_SESSION['admin'])) {
+?>
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><title>DivinTick - Connexion Admin</title>
+<script src="https://jsdelivr.net"></script></head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center">
+        <h1 class="text-2xl font-black text-slate-800 mb-2">🔐 Administration</h1>
+        <p class="text-sm text-slate-400 mb-6">Entrez le mot de passe pour accéder à DivinTick</p>
+        <?php if(isset($erreur)) echo "<p class='text-red-500 text-sm mb-4 font-semibold'>$erreur</p>"; ?>
+        <form method="POST" class="space-y-4">
+            <input type="password" name="password" placeholder="Mot de passe secret" class="w-full p-3 border border-slate-200 rounded-xl text-center focus:outline-none focus:border-blue-600" required>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-colors cursor-pointer">Se connecter</button>
+        </form>
+    </div>
+</body></html>
+<?php exit; }
+
+// --- CODE DE L'ADMINISTRATION SI CONNECTÉ ---
+
+// 1. Calcul du chiffre d'affaires total approximatif
+// (On associe chaque profil vendu à son prix réel pour calculer vos gains)
+$tarifs = [
+    '1-Go' => 100, '3-Go' => 200, '9-Go' => 500, '20-Go' => 1000,
+    '01-Heure' => 100, '3-Heures' => 200, '8-Heures' => 500, '24-Heures' => 1000,
+    'Illimite-24H' => 300, 'Illimite-1Semaine' => 1000, 'Illimite-1Mois' => 4500
+];
+
+$ventes_req = $db->query("SELECT profil, COUNT(*) as total FROM tickets WHERE statut = 'vendu' GROUP BY profil");
+$chiffre_affaire = 0;
+while($v = $ventes_req->fetch(PDO::FETCH_ASSOC)) {
+    if(isset($tarifs[$v['profil']])) { $chiffre_affaire += ($v['total'] * $tarifs[$v['profil']]); }
+}
+
+// 2. Récupération des statistiques des tickets (Disponibles vs Vendus)
+$stats_req = $db->query("SELECT profil,
+    SUM(CASE WHEN statut = 'disponible' THEN 1 ELSE 0 END) as dispo,
+    SUM(CASE WHEN statut = 'vendu' THEN 1 ELSE 0 END) as vendu
+    FROM tickets GROUP BY profil ORDER BY profil ASC");
+$stats = $stats_req->fetchAll(PDO::FETCH_ASSOC);
+
+// 3. Récupération des 10 dernières ventes
+$historique_req = $db->query("SELECT profil, username, date_vente FROM tickets WHERE statut = 'vendu' ORDER BY date_vente DESC LIMIT 10");
+$historique = $historique_req->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DivinTick - Dashboard Administrateur</title>
+    <title>DivinTick - Tableau de Bord</title>
     <script src="https://jsdelivr.net"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 antialiased min-h-screen font-sans">
+<body class="bg-slate-50 min-h-screen text-slate-800 antialiased p-4 sm:p-6">
 
-    <div class="flex flex-col md:flex-row min-h-screen">
+    <div class="max-w-4xl mx-auto space-y-6">
        
-        <!-- BARRE LATERALE DE NAVIGATION (Comme sur l'image) -->
-        <aside class="w-full md:w-64 bg-slate-950 p-6 space-y-6 shadow-xl">
-            <div class="text-xl font-black tracking-wider text-blue-500">🚀 DIVINTICK</div>
-            <div class="text-xs text-slate-500 uppercase tracking-widest font-bold">Principal</div>
-            <nav class="space-y-2">
-                <a href="dashboard.php" class="block bg-blue-600 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all">📊 Dashboard</a>
-                <a href="#" class="block text-slate-400 hover:bg-slate-900 hover:text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all">📶 Routeurs</a>
-                <a href="#" class="block text-slate-400 hover:bg-slate-900 hover:text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all">🎟 Gestion Tickets</a>
-            </nav>
-        </aside>
-
-        <!-- ZONE DU CONTENU PRINCIPAL -->
-        <main class="flex-1 p-6 md:p-10 space-y-8">
-           
-            <!-- EN-TETE DU DASHBOARD -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4">
-                <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight">Tableau de Bord</h1>
-                    <p class="text-sm text-slate-400 mt-1">Suivi en direct de l'activité de votre Wi-Fi Zone</p>
-                </div>
-                <div class="bg-slate-950 text-xs px-4 py-2 rounded-lg border border-slate-800 text-slate-400 mt-4 md:mt-0">
-                     <?php echo date('d-m-Y H:i'); ?>
-                </div>
+        <!-- En-tête -->
+        <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <div>
+                <h1 class="text-2xl font-black text-slate-900">📊 Tableau de Bord</h1>
+                <p class="text-xs text-slate-400">Gestion de vos stocks et ventes Divin Cyber Café</p>
             </div>
+            <a href="dashboard.php?logout=1" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Déconnexion</a>
+        </div>
 
-            <!-- LES BLOCS DE STATISTIQUES (Identiques aux tuiles bleues de votre exemple) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-               
-                <!-- Tuile 1 : Revenus -->
-                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Revenus Estimés</div>
-                    <div class="text-3xl font-black text-emerald-400 mt-2"><?php echo $total_vendus * 100; ?> F CFA</div>
-                    <p class="text-[10px] text-slate-500 mt-1">Calculé sur la base des tickets livrés</p>
-                </div>
+        <!-- Carte Chiffre d'Affaires -->
+        <div class="bg-blue-600 p-6 rounded-2xl shadow-md text-white text-center sm:text-left">
+            <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">Chiffre d'Affaires Estimé</p>
+            <p class="text-4xl font-black mt-1"><?php echo number_format($chiffre_affaire, 0, ',', ' '); ?> <span class="text-xl">F CFA</span></p>
+        </div>
 
-                <!-- Tuile 2 : Tickets Vendus -->
-                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-sm">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tickets Vendus (Total)</div>
-                    <div class="text-3xl font-black text-blue-400 mt-2"><?php echo $total_vendus; ?></div>
-                    <p class="text-[10px] text-slate-500 mt-1">Transactions validées par FedaPay</p>
-                </div>
+        <!-- Grille des Stocks -->
+        <div>
+            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3 px-1">📦 État de vos Stocks de Tickets</h2>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b border-slate-100">
+                            <th class="p-4">Profil Forfait</th>
+                            <th class="p-4 text-center">En Stock (Dispo)</th>
+                            <th class="p-4 text-center">Vendus</th>
+                            <th class="p-4 text-right">Alerte</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50 text-sm">
+                        <?php foreach($stats as $s): ?>
+                        <tr>
+                            <td class="p-4 font-bold text-slate-700"><?php echo htmlspecialchars($s['profil']); ?></td>
+                            <td class="p-4 text-center font-mono font-bold <?php echo ($s['dispo'] <= 5) ? 'text-red-600 bg-red-50' : 'text-emerald-600'; ?>">
+                                <?php echo $s['dispo']; ?>
+                            </td>
+                            <td class="p-4 text-center font-mono text-slate-400"><?php echo $s['vendu']; ?></td>
+                            <td class="p-4 text-right">
+                                <?php if($s['dispo'] <= 5): ?>
+                                    <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2.5 py-1 rounded-full animate-pulse">🚨 Recharger !</span>
+                                <?php else: ?>
+                                    <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">OK</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <!-- Tuile 3 : Stock restant -->
-                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-sm">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tickets en Stock (Disponibles)</div>
-                    <div class="text-3xl font-black <?php echo ($total_stock < 10) ? 'text-red-400' : 'text-purple-400'; ?> mt-2">
-                        <?php echo $total_stock; ?>
+        <!-- Historique des 10 dernières ventes -->
+        <div>
+            <h2 class="text-sm uppercase font-bold text-slate-400 tracking-wider mb-3 px-1">🕒 10 Dernières Ventes Automatiques</h2>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 space-y-3">
+                <?php if(empty($historique)): ?>
+                    <p class="text-center text-sm text-slate-400 py-4">Aucune vente enregistrée pour le moment.</p>
+                <?php else: ?>
+                    <?php foreach($historique as $h): ?>
+                    <div class="flex justify-between items-center py-2 border-b border-slate-50 last:border-0 text-xs sm:text-sm">
+                        <div>
+                            <span class="font-bold text-slate-800"><?php echo htmlspecialchars($h['profil']); ?></span>
+                            <span class="text-slate-400 text-xs ml-2">Client : <span class="font-mono text-blue-600"><?php echo htmlspecialchars($h['username']); ?></span></span>
+                        </div>
+                        <span class="text-slate-400 text-xs font-mono"><?php echo date('d/m H:i', strtotime($h['date_vente'])); ?></span>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-1">Pensez à en rajouter depuis Winbox si le stock est rouge</p>
-                </div>
-
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
+        </div>
 
-            <!-- ZONE INFERIEURE : LISTE DES DERNIÈRES VENTES -->
-            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-sm">
-                <h3 class="text-lg font-bold mb-4">Dernières transactions en direct</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-400">
-                        <thead class="text-xs uppercase bg-slate-900 text-slate-500">
-                            <tr>
-                                <th class="p-3">ID</th>
-                                <th class="p-3">Forfait / Profil</th>
-                                <th class="p-3">Code Utilisateur</th>
-                                <th class="p-3">Date de Vente</th>
-                                <th class="p-3">Statut</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-900">
-                            <?php
-                            // Récupération des 5 dernières ventes pour l'affichage du tableau
-                            $ventes = $db->query("SELECT * FROM tickets WHERE statut = 'vendu' ORDER BY date_vente DESC LIMIT 5")->fetchAll();
-                            if(count($ventes) > 0):
-                                foreach($ventes as $v):
-                            ?>
-                            <tr class="hover:bg-slate-900/50 transition-colors">
-                                <td class="p-3 font-mono text-xs"><?php echo $v['id']; ?></td>
-                                <td class="p-3 font-semibold text-slate-200"><?php echo htmlspecialchars($v['profil']); ?></td>
-                                <td class="p-3 font-mono text-blue-400"><?php echo htmlspecialchars($v['username']); ?></td>
-                                <td class="p-3 text-xs"><?php echo $v['date_vente']; ?></td>
-                                <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full font-bold">Validé</span></td>
-                            </tr>
-                            <?php
-                                endforeach;
-                            else:
-                            ?>
-                            <tr>
-                                <td colspan="5" class="p-4 text-center text-slate-600 italic">Aucune vente enregistrée pour le moment.</td>
-                            </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </main>
     </div>
 
 </body>
